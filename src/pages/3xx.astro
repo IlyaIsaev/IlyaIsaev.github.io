@@ -1,0 +1,17 @@
+---
+import type { RedirectPageProps as Props } from "astro";
+
+const { to, delay } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    {to != null && <meta http-equiv="refresh" content={`${delay};url=${to}`} />}
+    <meta name="robots" content="noindex" />
+    <title>Redirecting...</title>
+  </head>
+  <body>
+    <p>Redirecting...</p>
+  </body>
+</html>
