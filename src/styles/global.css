@@ -1,0 +1,614 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-gray-50: oklch(98% 0 0);
+  --color-gray-100: oklch(97% 0 0);
+  --color-gray-200: oklch(93% 0 0);
+  --color-gray-300: oklch(87% 0 0);
+  --color-gray-400: oklch(70% 0 0);
+  --color-gray-500: oklch(55% 0 0);
+  --color-gray-600: oklch(45% 0 0);
+  --color-gray-700: oklch(37% 0 0);
+  --color-gray-800: oklch(28% 0 0);
+  --color-gray-900: oklch(21% 0 0);
+  --color-gray-950: oklch(13% 0 0);
+  --font-weight-bold: 600;
+}
+
+@theme inline {
+  --font-sans: var(--font-monaspace-neon);
+  --font-mono: var(--font-monaspace-neon);
+}
+
+html,
+body {
+  min-height: 100%;
+  color-scheme: light;
+  background-color: var(--color-white);
+  color: var(--color-gray-800);
+  font-family: var(--font-monaspace-neon);
+  font-size: 18px;
+  font-synthesis-weight: none;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose strong,
+.prose b {
+  font-weight: 600;
+}
+
+.prose {
+  --tw-prose-body: var(--color-gray-800);
+  --tw-prose-headings: var(--color-gray-900);
+  --tw-prose-lead: var(--color-gray-600);
+  --tw-prose-links: var(--color-gray-700);
+  --tw-prose-bold: var(--color-gray-700);
+  --tw-prose-counters: var(--color-gray-500);
+  --tw-prose-bullets: var(--color-gray-400);
+  --tw-prose-hr: var(--color-gray-200);
+  --tw-prose-quotes: var(--color-gray-800);
+  --tw-prose-quote-borders: var(--color-gray-200);
+  --tw-prose-captions: var(--color-gray-500);
+  --tw-prose-kbd: var(--color-gray-900);
+  --tw-prose-kbd-shadows: color-mix(in oklab, var(--color-gray-900) 10%, transparent);
+  --tw-prose-code: var(--color-gray-900);
+  --tw-prose-pre-code: var(--color-gray-800);
+  --tw-prose-pre-bg: var(--color-gray-50);
+  --tw-prose-th-borders: var(--color-gray-200);
+  --tw-prose-td-borders: var(--color-gray-200);
+}
+
+.prose a:link,
+.prose a:visited {
+  color: var(--color-gray-700);
+}
+
+.prose a:hover,
+.prose a:active {
+  color: var(--color-gray-900);
+}
+
+.prose .skills .skill-group {
+  font-weight: 600;
+  font-style: italic;
+}
+
+.prose .skills .skill-group::after {
+  content: ":";
+}
+
+.print-text {
+  display: inline;
+}
+
+/* Top-level so print preview sees it. A zero margin leaves no room for the date and title. */
+@page {
+  size: A4;
+  margin: 0;
+}
+
+@media not print {
+  .prose .meta {
+    color: var(--color-gray-500);
+  }
+
+  .nf {
+    display: inline-block;
+    margin-inline-end: 0.4em;
+    font-size: 1em;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 1;
+    color: var(--color-gray-700);
+  }
+
+  .resume-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.5rem;
+    padding-block: 0.2em;
+  }
+
+  .identity {
+    display: flex;
+    min-width: 0;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .prose .resume-header h1 {
+    margin: 0;
+  }
+
+  html[lang="ru"] .prose .resume-header h1 {
+    font-weight: 400;
+  }
+
+  .prose .contacts {
+    margin: 0;
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0em;
+    max-width: 100%;
+    padding: 0;
+    list-style: none;
+  }
+
+  .prose .contacts li {
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+  }
+
+  .prose .contacts a {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.4em;
+    width: fit-content;
+    max-width: 100%;
+    text-decoration: none;
+  }
+
+  .prose .contacts .print-text {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .prose .contacts .nf {
+    margin-inline-end: 0;
+    font-size: 1.5em;
+    line-height: 1;
+    /* Nerd Font glyphs sit above the text ink. */
+    translate: 0 0.09em;
+  }
+
+  .job-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+  }
+
+  .prose .job-heading h3 {
+    margin: 0;
+    min-width: 0;
+    flex: 1 1 12rem;
+    font-size: 20px;
+  }
+
+  .prose .job-heading .dates {
+    margin: 0 0 0 auto;
+    flex: none;
+    white-space: nowrap;
+  }
+
+  .prose .about {
+    margin-top: 1.15em;
+  }
+
+  .prose .about p {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .prose .about p + p {
+    margin-top: 0.75em;
+  }
+
+  .prose .job > .meta {
+    margin-top: 0;
+    font-size: inherit;
+  }
+
+  .prose .job + .job {
+    padding-top: 0.9em;
+  }
+
+  .prose .education ul,
+  .prose .languages ul,
+  .prose .education li,
+  .prose .languages li {
+    padding-inline-start: 0;
+  }
+
+  .prose .education ul,
+  .prose .languages ul {
+    list-style: none;
+  }
+
+  .prose .education li:first-child,
+  .prose .languages li:first-child {
+    margin-top: 0;
+  }
+
+  .prose .skills ul {
+    list-style: none;
+    margin: 0;
+    padding-inline-start: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1.25rem;
+    row-gap: 0.7em;
+    line-height: 1.4;
+  }
+
+  @media (max-width: 40rem) {
+    .prose .skills ul {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .prose .skills li {
+    margin: 0;
+    padding-inline-start: 1em;
+  }
+
+  /* Width is 1em of the icon, so the hanging indent matches the glyph. */
+  .prose .skills li .nf {
+    width: 1em;
+    margin-inline-start: -1em;
+    margin-inline-end: 0;
+  }
+
+  .prose h2 {
+    margin-top: 1.15em;
+    margin-bottom: 0.15em;
+  }
+}
+
+@media print {
+  html,
+  body {
+    font-family: var(--font-inter);
+    font-size: 11pt;
+    line-height: 1.17;
+    font-synthesis-weight: auto;
+    font-synthesis-style: auto;
+  }
+
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose strong,
+  .prose b {
+    font-weight: 600;
+  }
+
+  .prose,
+  .prose :where(*) {
+    line-height: 1.17;
+  }
+
+  main {
+    max-width: none;
+    width: 100%;
+    padding: 6mm 10mm 4mm;
+    /* Repeat the inset on every printed page. */
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  .prose {
+    max-width: none;
+  }
+
+  .nf {
+    display: inline-block;
+    font-family: var(--font-monaspace-neon);
+    font-size: 1em;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 1.17;
+    margin-inline-end: 0.4em;
+  }
+
+  .print-text {
+    display: inline;
+  }
+
+  .resume-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1.25rem;
+    margin: 0;
+    padding-block: 4pt;
+  }
+
+  .identity {
+    display: flex;
+    min-width: 0;
+    flex: 1 1 auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.15em 1.25rem;
+  }
+
+  .prose .resume-header h1 {
+    margin: 0;
+    line-height: 1.17;
+  }
+
+  .prose .contacts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1.25rem;
+    row-gap: 0.2em;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: left;
+    line-height: 1.17;
+  }
+
+  .prose .contacts li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .prose .contacts a {
+    display: flex;
+    align-items: center;
+    gap: 0.35em;
+    width: fit-content;
+    max-width: 100%;
+    text-decoration: none;
+    color: inherit;
+    white-space: nowrap;
+  }
+
+  .prose .contacts .nf {
+    flex: none;
+    width: 1em;
+    overflow: hidden;
+    margin-inline-end: 0;
+    font-size: 1.5em;
+    line-height: 1.17;
+  }
+
+  .prose h2 {
+    margin-top: 3pt;
+    margin-bottom: 4pt;
+  }
+
+  .prose .about p {
+    margin: 0;
+  }
+
+  .prose .about p + p {
+    margin-top: 0.2em;
+  }
+
+  .prose .education ul,
+  .prose .languages ul,
+  .prose .education li,
+  .prose .languages li {
+    margin: 0;
+    padding-inline-start: 0;
+    list-style: none;
+  }
+
+  .prose .education li:first-child,
+  .prose .languages li:first-child {
+    margin-top: 0;
+  }
+
+  .prose .skills ul {
+    margin: 0;
+    padding-inline-start: 0;
+    list-style: none;
+    column-count: 3;
+    column-gap: 0.9rem;
+  }
+
+  .prose .skills li {
+    position: relative;
+    margin: 0 0 6pt;
+    padding: 0;
+    break-inside: avoid;
+  }
+
+  /* Sit in the column gutter so wrapping stays the same as without icons. */
+  .prose .skills li .nf {
+    position: absolute;
+    left: -0.95em;
+    width: 0.9em;
+    margin: 0;
+    font-size: 0.9em;
+  }
+
+  .prose .skills .skill-group {
+    font-size: inherit;
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  .job-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.15rem 1rem;
+    margin-top: 0.35em;
+  }
+
+  .prose .job {
+    break-inside: avoid;
+  }
+
+  .prose .job p {
+    margin-top: 0.12em;
+    margin-bottom: 0.12em;
+  }
+
+  .prose .job ul {
+    margin-top: 0.1em;
+    margin-bottom: 0.1em;
+  }
+
+  .prose .job li {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .prose .job li + li {
+    margin-top: 4pt;
+  }
+
+  .prose .job + .job {
+    padding-top: 0.85em;
+  }
+
+  .prose .job:first-of-type .job-heading {
+    margin-top: 0;
+  }
+
+  .prose .job-heading h3 {
+    margin: 0;
+    min-width: 0;
+    flex: 1 1 12rem;
+    font-size: inherit;
+  }
+
+  .prose .job-heading .dates {
+    margin: 0 0 0 auto;
+    flex: none;
+    white-space: nowrap;
+  }
+
+  .prose .job > .meta {
+    margin-top: 0;
+    margin-bottom: 0.12em;
+    font-size: inherit;
+  }
+
+  html[lang="ru"] .prose,
+  html[lang="ru"] .prose :where(*) {
+    line-height: 1.17;
+  }
+
+  html[lang="ru"] .resume-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.12em 1.25rem;
+  }
+
+  html[lang="ru"] .identity {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.15em 1.25rem;
+  }
+
+  html[lang="ru"] .prose .resume-header,
+  html[lang="ru"] .prose .resume-header :where(*) {
+    line-height: 1.17;
+  }
+
+  html[lang="ru"] .prose .resume-header h1 {
+    margin: 0;
+    font-size: 15pt;
+    font-weight: 400;
+    line-height: 1.17;
+  }
+
+  html[lang="ru"] .prose .contacts-section .contacts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1.25rem;
+    row-gap: 0.12em;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: left;
+  }
+
+  html[lang="ru"] .prose .contacts-section .contacts li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  html[lang="ru"] .prose .job + .job {
+    margin-top: 8pt;
+    padding-top: 0;
+  }
+
+  html[lang="ru"] .prose h2 {
+    margin-top: 1pt;
+    margin-bottom: 4pt;
+    font-size: 12pt;
+    line-height: 1.17;
+  }
+
+  html[lang="ru"] .prose .about p + p {
+    margin-top: 0.1em;
+  }
+
+  html[lang="ru"] .prose .skills .skill-group {
+    font-size: 1em;
+  }
+
+  html[lang="ru"] .prose .job:first-of-type {
+    break-after: page;
+    break-inside: auto;
+  }
+
+  html[lang="ru"] .prose .job p {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  html[lang="ru"] .prose .job ul {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-inline-start: 0.7em;
+  }
+
+  html[lang="ru"] .prose .job li {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-inline-start: 0.1em;
+  }
+
+  html[lang="ru"] .prose .job li + li {
+    margin-top: 4pt;
+  }
+
+  html[lang="ru"] .prose .job li::marker {
+    font-size: 0.55em;
+  }
+
+  /* Same gap as About → Skills, on every main section. */
+  html .prose > section {
+    margin-top: 9pt;
+  }
+
+  html .prose .job > p.meta {
+    margin-top: 4pt;
+    margin-bottom: 8pt;
+  }
+
+  html .prose .job p.tech-stack {
+    margin-top: 6pt;
+    margin-bottom: 8pt;
+  }
+}

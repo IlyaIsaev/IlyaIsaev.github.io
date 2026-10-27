@@ -1,0 +1,180 @@
+---
+import { Font } from "astro:assets";
+import { getCollection, getEntry, render } from "astro:content";
+import type { Locale } from "../i18n/locale";
+import "../styles/global.css";
+
+type Props = {
+  locale: Locale;
+};
+
+const nf = {
+  email: "\u{F01EE}",
+  telegram: "\u{F2C6}",
+  github: "\u{F02A4}",
+  linkedin: "\u{F033B}",
+} as const;
+
+const { locale } = Astro.props;
+
+const profileEntry = await getEntry("profile", locale);
+const aboutEntry = await getEntry("about", locale);
+const skillsEntry = await getEntry("skills", locale);
+const educationEntry = await getEntry("education", locale);
+const languagesEntry = await getEntry("languages", locale);
+
+if (!profileEntry || !aboutEntry || !skillsEntry || !educationEntry || !languagesEntry) {
+  throw new Error("Resume content files are missing");
+}
+
+const profile = profileEntry.data;
+const { Content: About } = await render(aboutEntry);
+const { Content: Skills } = await render(skillsEntry);
+const { Content: Education } = await render(educationEntry);
+const { Content: Languages } = await render(languagesEntry);
+
+const localePrefix = `${locale}/`;
+const jobs = (await getCollection("experience"))
+  .filter((job) => job.id.startsWith(localePrefix))
+  .toSorted((left, right) => left.data.order - right.data.order);
+const renderedJobs = await Promise.all(
+  jobs.map(async (job) => {
+    const { Content } = await render(job);
+    return { job, Content };
+  }),
+);
+
+const externalSiteAttrs = (href: string) =>
+  /^https?:\/\//i.test(href)
+    ? { target: "_blank" as const, rel: "noopener noreferrer" as const }
+    : {};
+---
+
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={profile.description} />
+    <title>{profile.name} — {profile.title}</title>
+    <Font
+      cssVariable="--font-monaspace-neon"
+      preload={[
+        { weight: "400", style: "normal" },
+        { weight: "600", style: "normal" },
+        { weight: "600", style: "italic" },
+      ]}
+    />
+    <Font
+      cssVariable="--font-inter"
+      preload={[
+        { weight: "400", style: "normal" },
+        { weight: "600", style: "normal" },
+        { weight: "400", style: "italic" },
+        { weight: "600", style: "italic" },
+      ]}
+    />
+  </head>
+  <body>
+    <main class="mx-auto w-full max-w-3xl px-6 py-12">
+      <article class="prose">
+        <header class="resume-header">
+          <div class="identity">
+            <h1>{profile.name}</h1>
+          </div>
+        </header>
+
+        <section class="about">
+          <About />
+        </section>
+
+        <section class="skills">
+          <h2>{skillsEntry.data.title}</h2>
+          <Skills />
+        </section>
+
+        <section class="experience">
+          <h2>{profile.experienceTitle}</h2>
+          {renderedJobs.map(({ job, Content }) => (
+            <article class="job" lang={job.data.lang}>
+              <div class="job-heading">
+                <h3>{job.data.role}</h3>
+                <p class="meta dates">
+                  <time datetime={job.data.start}>{job.data.startLabel}</time> –{" "}
+                  <time datetime={job.data.end}>{job.data.endLabel}</time>
+                </p>
+              </div>
+              <p class="meta">
+                {job.data.employerHref ? (
+                  <a href={job.data.employerHref} {...externalSiteAttrs(job.data.employerHref)}>
+                    {job.data.employer}
+                  </a>
+                ) : (
+                  job.data.employer
+                )}
+                {job.data.tagline && (
+                  <>
+                    {" · "}
+                    {job.data.tagline}
+                  </>
+                )}
+                {" · "}
+                {job.data.duration}
+                {" · "}
+                <a href={job.data.href} {...externalSiteAttrs(job.data.href)}>
+                  {job.data.hrefLabel}
+                </a>
+                {job.data.note && (
+                  <>
+                    {" · "}
+                    {job.data.note}
+                  </>
+                )}
+              </p>
+              {job.data.bodyLang ? (
+                <div lang={job.data.bodyLang}>
+                  <Content />
+                </div>
+              ) : (
+                <Content />
+              )}
+            </article>
+          ))}
+        </section>
+
+        <section class="education">
+          <h2>{educationEntry.data.title}</h2>
+          <Education />
+        </section>
+
+        <section class="languages">
+          <h2>{languagesEntry.data.title}</h2>
+          <Languages />
+        </section>
+
+        <section class="contacts-section">
+          <h2>{profile.contactsTitle}</h2>
+          <ul class="meta contacts">
+            {profile.contacts.map((contact) => (
+              <li>
+                <a
+                  aria-label={contact.text}
+                  href={contact.href}
+                  title={contact.text}
+                  {...externalSiteAttrs(contact.href)}
+                >
+                  <span class="nf" data-icon={contact.icon} aria-hidden="true">
+                    {nf[contact.icon]}
+                  </span>
+                  <span class="print-text">{contact.printText ?? contact.text}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </article>
+    </main>
+  </body>
+</html>
